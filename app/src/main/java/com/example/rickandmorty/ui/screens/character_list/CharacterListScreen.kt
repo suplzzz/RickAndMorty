@@ -28,7 +28,8 @@ import com.example.rickandmorty.ui.screens.character_list.components.CharacterCa
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterListScreen(
-    viewModel: CharacterListViewModel = hiltViewModel()
+    viewModel: CharacterListViewModel = hiltViewModel(),
+    onCharacterClick: (Int) -> Unit
 ) {
     val lazyPagingItems = viewModel.characterPagingFlow.collectAsLazyPagingItems()
 
@@ -73,7 +74,7 @@ fun CharacterListScreen(
                         ) { index ->
                             val character = lazyPagingItems[index]
                             if (character != null) {
-                                CharacterCard(character = character)
+                                CharacterCard(character = character, onClick = { onCharacterClick(character.id) })
                             }
                         }
                     }
