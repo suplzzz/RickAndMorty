@@ -64,9 +64,8 @@ fun CharacterCard(
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(horizontal = 16.dp, vertical = 10.dp) // Немного изменил отступы
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                // Имя персонажа
                 Text(
                     text = character.name,
                     style = MaterialTheme.typography.titleLarge,
@@ -76,7 +75,7 @@ fun CharacterCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // Строка со статусом
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -101,7 +100,7 @@ fun CharacterCard(
                 }
                 Spacer(modifier = Modifier.height(2.dp))
 
-                // ИЗМЕНЕНИЕ: Отдельная строка для вида и пола
+
                 Text(
                     text = "${character.species} | ${character.gender}",
                     style = MaterialTheme.typography.bodyMedium,
