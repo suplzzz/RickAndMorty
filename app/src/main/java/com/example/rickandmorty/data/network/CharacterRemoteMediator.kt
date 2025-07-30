@@ -37,7 +37,7 @@ class CharacterRemoteMediator(
             }
 
             val response = apiService.getCharacters(page = page)
-            val endOfPaginationReached = response.infoDto.next == null
+            val endOfPaginationReached = response.info.next == null
 
             val prevKey = if (page == 1) null else page - 1
             val nextKey = if (endOfPaginationReached) null else page + 1
