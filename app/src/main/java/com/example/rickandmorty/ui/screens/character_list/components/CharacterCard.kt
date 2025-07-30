@@ -1,6 +1,7 @@
 package com.example.rickandmorty.ui.screens.character_list.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,10 +36,11 @@ import com.example.rickandmorty.R
 @Composable
 fun CharacterCard(
     modifier: Modifier = Modifier,
-    character: Character
+    character: Character,
+    onClick: () -> Unit
 ) {
     Card(
-        modifier = modifier.aspectRatio(0.8f),
+        modifier = modifier.aspectRatio(0.8f).clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -85,8 +87,8 @@ fun CharacterCard(
                             .clip(CircleShape)
                             .background(
                                 when (character.status) {
-                                    "Alive" -> Color(0xFF00C853)
-                                    "Dead" -> Color(0xFFD50000)
+                                    "Alive" -> Color.Green
+                                    "Dead" -> Color.Red
                                     else -> Color.Gray
                                 }
                             )
@@ -126,11 +128,16 @@ fun CharacterCardPreview() {
         gender = "Male",
         originName = "Earth (C-137)",
         locationName = "Citadel of Ricks",
-        imageUrl = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        imageUrl = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episodeCount = 51,
+        createdDate = "04 November 2017"
     )
     com.example.rickandmorty.ui.theme.RickAndMortyTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            CharacterCard(character = fakeCharacter)
+            CharacterCard(
+                character = fakeCharacter,
+                onClick = {}
+            )
         }
     }
 }

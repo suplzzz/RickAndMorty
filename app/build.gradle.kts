@@ -59,10 +59,13 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.tooling.preview)
+
 
     // Dependency Injection
     implementation(libs.hilt.android)
+    implementation(libs.material)
     ksp(libs.hilt.android.compiler)
 
     // Navigation
