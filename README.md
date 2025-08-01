@@ -12,7 +12,7 @@ Android-приложение для просмотра персонажей се
 
 ## Технологический стек
 
-Проект построен на принципах **Чистой Архитектуры (Clean Architecture)** с паттерном **MVVM** на UI-слое.
+Проект построен на принципах **Чистой Архитектуры (Clean Architecture)** с паттерном **MVVM**.
 
 *   **Язык:** Kotlin, Coroutines & Flow
 *   **UI:** Jetpack Compose, Material 3, Compose Navigation
