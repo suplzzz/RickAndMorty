@@ -4,19 +4,19 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
+import com.example.rickandmorty.data.CharacterRemoteMediator
 import com.example.rickandmorty.data.database.AppDatabase
-import com.example.rickandmorty.data.database.CharacterEntity
-import com.example.rickandmorty.data.mappers.toDomainModel
-import com.example.rickandmorty.data.mappers.toEntity
+import com.example.rickandmorty.data.mappers.toDomain
 import com.example.rickandmorty.data.network.ApiService
-import com.example.rickandmorty.data.network.CharacterRemoteMediator
+import com.example.rickandmorty.domain.model.Character
 import com.example.rickandmorty.domain.repository.CharacterRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import com.example.rickandmorty.domain.model.Character
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import javax.inject.Singleton
 
+@Singleton
 class CharacterRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val appDatabase: AppDatabase
@@ -25,8 +25,23 @@ class CharacterRepositoryImpl @Inject constructor(
     private val characterDao = appDatabase.characterDao()
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getCharacterPagingData(): Flow<PagingData<CharacterEntity>> {
-        val pagingSourceFactory = { appDatabase.characterDao().pagingSource() }
+    override fun getCharacters(
+        nameQuery: String,
+        statusQuery: String,
+        speciesQuery: String,
+        typeQuery: String,
+        genderQuery: String
+    ): Flow<PagingData<Character>> {
+
+        val pagingSourceFactory = {
+            characterDao.getCharacters(
+                nameQuery = nameQuery,
+                statusQuery = statusQuery,
+                speciesQuery = speciesQuery,
+                typeQuery = typeQuery,
+                genderQuery = genderQuery
+            )
+        }
 
         return Pager(
             config = PagingConfig(
@@ -34,30 +49,20 @@ class CharacterRepositoryImpl @Inject constructor(
                 enablePlaceholders = false
             ),
             remoteMediator = CharacterRemoteMediator(
-                apiService,
-                appDatabase
+                appDatabase = appDatabase,
+                apiService = apiService
             ),
             pagingSourceFactory = pagingSourceFactory
-        ).flow
-    }
-
-    override fun getCharacterById(id: Int): Flow<Character> = flow {
-        val cachedCharacter = characterDao.getCharacterById(id).first()
-        if (cachedCharacter != null) {
-            emit(cachedCharacter.toDomainModel())
-        }
-
-        try {
-            val characterFromApi = apiService.getCharacterById(id)
-            characterDao.insertAll(listOf(characterFromApi.toEntity()))
-
-            val updatedCharacter = characterDao.getCharacterById(id).first()
-            if (updatedCharacter != null) {
-                emit(updatedCharacter.toDomainModel())
+        ).flow.map { pagingDataEntity ->
+            pagingDataEntity.map { characterEntity ->
+                characterEntity.toDomain()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
+    override fun getCharacterDetail(id: Int): Flow<Character?> {
+        return characterDao.getCharacterById(id).map { characterEntity ->
+            characterEntity?.toDomain()
+        }
+    }
 }
