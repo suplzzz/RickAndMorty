@@ -1,14 +1,7 @@
-package com.example.rickandmorty.data.database
+package com.example.rickandmorty.ui.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-
-@Entity(tableName = "characters")
-data class CharacterEntity(
-    @PrimaryKey
+data class CharacterUiModel(
     val id: Int,
-
     val name: String,
     val status: String,
     val species: String,
@@ -18,5 +11,5 @@ data class CharacterEntity(
     val locationName: String,
     val imageUrl: String,
     val episodeCount: Int,
-    val created: String
+    val createdDate: String
 )

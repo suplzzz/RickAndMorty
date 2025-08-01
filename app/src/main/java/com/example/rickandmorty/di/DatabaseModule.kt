@@ -3,8 +3,8 @@ package com.example.rickandmorty.di
 import android.content.Context
 import androidx.room.Room
 import com.example.rickandmorty.data.database.AppDatabase
-import com.example.rickandmorty.data.database.CharacterDao
-import com.example.rickandmorty.data.database.RemoteKeyDao
+import com.example.rickandmorty.data.database.dao.CharacterDao
+import com.example.rickandmorty.data.database.dao.RemoteKeyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

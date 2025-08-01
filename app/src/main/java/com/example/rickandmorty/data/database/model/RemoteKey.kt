@@ -1,4 +1,4 @@
-package com.example.rickandmorty.data.database
+package com.example.rickandmorty.data.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "remote_keys")
 data class RemoteKey(
     @PrimaryKey
-    val characterId: Int,
+    val id: Int,
     val prevKey: Int?,
     val nextKey: Int?,
-    val lastUpdated: Long?
+    val createdAt: Long = System.currentTimeMillis()
 )
